@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imtiger.master.data.dao.OrgDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.imtiger.master.data.entity.Org">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="SHORT_NAME" property="shortName" />
+        <result column="FULL_NAME" property="fullName" />
+        <result column="TYPE" property="type" />
+        <result column="CREDIT_CODE" property="creditCode" />
+        <result column="RANK" property="rank" />
+        <result column="PARENT_ID" property="parentId" />
+        <result column="REGION" property="region" />
+        <result column="ADDRESS" property="address" />
+        <result column="LINKMAN" property="linkman" />
+        <result column="PHONE" property="phone" />
+        <result column="STATUS" property="status" />
+        <result column="DISABLED" property="disabled" />
+        <result column="CREATOR" property="creator" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATOR" property="updator" />
+        <result column="UPDATE_TIME" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, NAME, SHORT_NAME, FULL_NAME, TYPE, CREDIT_CODE, RANK, PARENT_ID, REGION, ADDRESS, LINKMAN, PHONE, STATUS, DISABLED, CREATOR, CREATE_TIME, UPDATOR, UPDATE_TIME
+    </sql>
+
+</mapper>

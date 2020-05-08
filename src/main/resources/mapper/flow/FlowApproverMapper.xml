@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imtiger.master.flow.dao.FlowApproverDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.imtiger.master.flow.entity.FlowApprover">
+        <id column="ID" property="id" />
+        <result column="TYPE" property="type" />
+        <result column="USER_ID" property="userId" />
+        <result column="ORG_ID" property="orgId" />
+        <result column="ROLE_ID" property="roleId" />
+        <result column="CLASS_NAME" property="className" />
+        <result column="METHOD_NAME" property="methodName" />
+        <result column="STATUS" property="status" />
+        <result column="DISABLED" property="disabled" />
+        <result column="CREATOR" property="creator" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATOR" property="updator" />
+        <result column="UPDATE_TIME" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, TYPE, USER_ID, ORG_ID, ROLE_ID, CLASS_NAME, METHOD_NAME, STATUS, DISABLED, CREATOR, CREATE_TIME, UPDATOR, UPDATE_TIME
+    </sql>
+
+</mapper>

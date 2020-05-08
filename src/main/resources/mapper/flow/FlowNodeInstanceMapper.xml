@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imtiger.master.flow.dao.FlowNodeInstanceDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.imtiger.master.flow.entity.FlowNodeInstance">
+        <id column="ID" property="id" />
+        <result column="INSTANCE_ID" property="instanceId" />
+        <result column="IS_SIGN" property="isSign" />
+        <result column="SIGN_USER_ID" property="signUserId" />
+        <result column="ORDER" property="order" />
+        <result column="NODE_ID" property="nodeId" />
+        <result column="NODE_NAME" property="nodeName" />
+        <result column="NODE_TYPE" property="nodeType" />
+        <result column="FLOW_ID" property="flowId" />
+        <result column="APPROVER_ID" property="approverId" />
+        <result column="STATUS" property="status" />
+        <result column="DISABLED" property="disabled" />
+        <result column="CREATOR" property="creator" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATOR" property="updator" />
+        <result column="UPDATE_TIME" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, INSTANCE_ID, IS_SIGN, SIGN_USER_ID, ORDER, NODE_ID, NODE_NAME, NODE_TYPE, FLOW_ID, APPROVER_ID, STATUS, DISABLED, CREATOR, CREATE_TIME, UPDATOR, UPDATE_TIME
+    </sql>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imtiger.master.data.dao.RegionDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.imtiger.master.data.entity.Region">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="FULL_NAME" property="fullName" />
+        <result column="RANK" property="rank" />
+        <result column="PARENT_ID" property="parentId" />
+        <result column="DISABLED" property="disabled" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, NAME, FULL_NAME, RANK, PARENT_ID, DISABLED
+    </sql>
+
+</mapper>

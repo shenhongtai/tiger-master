@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imtiger.master.flow.dao.FlowAuditLogDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.imtiger.master.flow.entity.FlowAuditLog">
+        <result column="ID" property="id" />
+        <result column="INSTANCE_ID" property="instanceId" />
+        <result column="NODE_INSTANCE_ID" property="nodeInstanceId" />
+        <result column="RESULT" property="result" />
+        <result column="MESSAGE" property="message" />
+        <result column="USER_ID" property="userId" />
+        <result column="OPERATE_TIME" property="operateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, INSTANCE_ID, NODE_INSTANCE_ID, RESULT, MESSAGE, USER_ID, OPERATE_TIME
+    </sql>
+
+</mapper>
