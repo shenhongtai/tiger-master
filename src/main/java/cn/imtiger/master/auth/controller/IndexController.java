@@ -1,6 +1,7 @@
 package cn.imtiger.master.auth.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -18,7 +20,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import cn.imtiger.constant.StatusConst;
 import cn.imtiger.controller.BaseController;
+import cn.imtiger.master.auth.entity.App;
 import cn.imtiger.master.auth.entity.User;
+import cn.imtiger.master.auth.service.AppService;
 import cn.imtiger.master.auth.service.UserService;
 import cn.imtiger.util.data.ValidateUtil;
 import cn.imtiger.util.image.VerifyCodeUtil;
@@ -32,8 +36,19 @@ public class IndexController extends BaseController {
 	private String captchaSessionKey;
 	
 	@Autowired
+	RestTemplate restTemplate;
+	@Autowired
 	UserService userService;
+	@Autowired
+	AppService appService;
 	
+	/**
+	 * 主页
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/")
 	public String index(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		JSONObject user = this.getCurrentUser();
@@ -44,18 +59,61 @@ public class IndexController extends BaseController {
 		}
 	}
 
+	/**
+	 * 用户登录
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 * @throws IOException 
+	 */
 	@RequestMapping(value = "/login")
 	public String login(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		return this.getView("login", model);
+		String appCode = this.getString("app");
+		User user = this.getCurrentUser(User.class);
+		if (user != null) {
+			// SP未登录，IDP已登录
+			if (ValidateUtil.isNotBlank(appCode)) {
+				QueryWrapper<App> queryWrapper = new QueryWrapper<>();
+				queryWrapper.eq("CODE", appCode);
+				App app = appService.getOne(queryWrapper);
+				if (app != null) {
+					// 应用代码有效，回调第三方应用登录地址
+					String url = app.getLoginUrl();
+					url.replace("{id}", user.getId());
+					url.replace("{account}", user.getAccount());
+					url.replace("{name}", user.getName());
+					try {
+						response.sendRedirect(url);
+						return null;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			// 应用代码未传或无效，登录到本系统
+			return this.index(request, response, model);
+		} else {
+			// IDP未登录，跳转登录页面
+			model.put("app", appCode);
+			return this.getView("login", model);
+		}
 	}
 
+	/**
+	 * 用户注册
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/register")
 	public String register(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		return this.getView("register", model);
 	}
 	
 	/**
-	 * 
+	 * 用户注销
 	 * @param request
 	 * @param response
 	 * @param map
@@ -63,7 +121,23 @@ public class IndexController extends BaseController {
 	 */
 	@RequestMapping(value = "/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response, ModelMap map) {
+		// 清除session
 		request.getSession().invalidate();
+		
+		// 注销第三方系统
+		QueryWrapper<App> queryWrapper = new QueryWrapper<>();
+		queryWrapper.ne("RUNNING", StatusConst.DISABLE);
+		queryWrapper.eq("STATUS", StatusConst.ENABLE);
+		List<App> list = appService.list(queryWrapper);
+		for (App app : list) {
+			restTemplate.getForObject(app.getLogoutUrl(), null);
+		}
+		
+		// 返回登录页面
+		String appCode = this.getString("app");
+		if (ValidateUtil.isNotBlank(appCode)) {
+			map.put("app", appCode);
+		}
 		return this.login(request, response, map);
 	}
 	
@@ -142,6 +216,7 @@ public class IndexController extends BaseController {
 				return this.getResponse(false, "用户账号已被禁用，请联系管理员");
 			} else {
 				// 用户状态正常，把用户信息保存到session
+				user.setPassword(null);
 				request.getSession().setAttribute(sessionKey, JSON.toJSONString(user));
 			}
 		}

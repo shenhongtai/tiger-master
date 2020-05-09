@@ -51,10 +51,16 @@ public class App extends Model<App> {
     private String groupId;
 
     /**
-     * 应用访问地址
+     * 应用登录接口地址
      */
-    @TableField("URL")
-    private String url;
+    @TableField("LOGIN_URL")
+    private String loginUrl;
+    
+    /**
+     * 应用注销接口地址
+     */
+    @TableField("LOGOUT_URL")
+    private String logoutUrl;
 
     /**
      * 应用图标
@@ -157,15 +163,23 @@ public class App extends Model<App> {
         this.groupId = groupId;
     }
 
-    public String getUrl() {
-        return url;
-    }
+    public String getLoginUrl() {
+		return loginUrl;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
 
-    public String getIcon() {
+	public String getLogoutUrl() {
+		return logoutUrl;
+	}
+
+	public void setLogoutUrl(String logoutUrl) {
+		this.logoutUrl = logoutUrl;
+	}
+
+	public String getIcon() {
         return icon;
     }
 
@@ -258,7 +272,8 @@ public class App extends Model<App> {
         ", name=" + name +
         ", description=" + description +
         ", groupId=" + groupId +
-        ", url=" + url +
+        ", loginUrl=" + loginUrl +
+        ", logoutUrl=" + logoutUrl +
         ", icon=" + icon +
         ", protocol=" + protocol +
         ", running=" + running +
